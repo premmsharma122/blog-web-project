@@ -1,81 +1,57 @@
-import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import './App.css'
+import authService from "./appwrite/auth"
+import { login, logout } from "./store/authSlice"
+import { Footer, Header } from './components'
+import { Outlet } from 'react-router-dom'
 
+function App() {
+  const [loading, setLoading] = useState(true)
+  const dispatch = useDispatch()
 
-function Square({ value, onSquareClick }) {
-  return (
-    <button
-      onClick={onSquareClick}
-      className="w-20 h-20 md:w-24 md:h-24 border-2 border-gray-800 text-2xl md:text-3xl font-bold flex items-center justify-center bg-gray-100 hover:bg-blue-100 transition-all duration-200 ease-in-out"
-    >
-      {value}
-    </button>
-  );
-}
-
-function Board() {
-  const [xIsNext, setXIsNext] = useState(true);
-  const [squares, setSquares] = useState(Array(9).fill(null));
-
-  function handleClick(i) {
-    if (squares[i] || calculateWinner(squares)) return;
-    const nextSquares = squares.slice();
-    nextSquares[i] = xIsNext ? "❌" : "⭕";
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);
-  }
-
-  const winner = calculateWinner(squares);
-  const status = winner
-    ? `🎉 Winner: ${winner}`
-    : `Next Player: ${xIsNext ? "❌ X" : "⭕ O"}`;
-
-  function resetGame() {
-    setSquares(Array(9).fill(null));
-    setXIsNext(true);
-  }
-
-  return (
-    <div className="flex flex-col items-center gap-4">
-      <h3 className="text-xl md:text-2xl font-semibold text-gray-800">{status}</h3>
-
-      <div className="grid grid-cols-3 gap-2 md:gap-3">
-        {squares.map((val, idx) => (
-          <Square key={idx} value={val} onSquareClick={() => handleClick(idx)} />
-        ))}
-      </div>
-
-      <button
-        className="btn btn-primary mt-3 px-4 py-2 text-lg"
-        onClick={resetGame}
-      >
-        Restart Game
-      </button>
-    </div>
-  );
-}
-
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8],
-    [0, 3, 6], [1, 4, 7], [2, 5, 8],
-    [0, 4, 8], [2, 4, 6]
-  ];
-  for (let [a, b, c] of lines) {
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const user = await authService.getCurrentUser();
+  //     if (user) {
+  //       dispatch(login({ userData: user }));
+  //     } else {
+  //       dispatch(logout());
+  //     }
+  //     setLoading(false); // ✅ Set this
+  //   };
+  //   fetchUser();
+  // }, [])
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const user = await authService.getCurrentUser();
+      console.log("Fetched User: ", user);
+      if (user) {
+        dispatch(login({ userData: user }));
+      } else {
+        dispatch(logout());
+      }
+    } catch (err) {
+      console.error("Error fetching user: ", err);
+    } finally {
+      setLoading(false);
     }
-  }
-  return null;
+  };
+  fetchUser();
+}, []);
+
+  return !loading ? (
+    <div className='min-h-screen flex flex-wrap content-between bg-gray-400'>
+      <div className='w-full block'>
+        <Header />
+        <main>
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
+    </div>
+  ) : null
 }
 
-const App = () => {
-  return (
-    <div className="container py-5">
-      <h1 className="text-center mb-4 text-3xl md:text-4xl font-bold">Tic Tac Toe 🎮</h1>
-      <Board />
-    </div>
-  );
-};
-
-export default App;
+export default App
