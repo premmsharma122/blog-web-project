@@ -1,12 +1,25 @@
-# React + Vite
+# Blog-Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live Demo:** [https://blog-web-pro-prem.netlify.app/](https://blog-web-pro-prem.netlify.app/)  
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+- **Frontend:** React.js  
+- **Backend & Authentication:** Appwrite  
+- **Rich Text Editor:** TinyMCE  
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Features
+- **User Authentication:** Secure login/signup using Appwrite backend.  
+- **Blog Management:** Users can create, edit, and publish blog articles.  
+- **Rich Text Editing:** Full-featured editor with TinyMCE, supporting text formatting, images, and media uploads.  
+- **Media Management:** Store images and blog media efficiently via Appwrite.  
+- **Scalable:** Supports up to 75,000 monthly active users.  
+
+---
+##  Usage
+Sign up or log in to start creating blogs.
+Use the TinyMCE editor to format text and upload images.
+Publish your blog posts to share them with other users.
